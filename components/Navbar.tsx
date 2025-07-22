@@ -22,12 +22,13 @@ export default function Navbar() {
       className="
         h-20 
         w-full 
+        z-[9999]
         p-4 
         flex
         justify-between
         align-center
         top-0
-        bg-gray-700
+        bg-gray-900
         fixed
         shadow-sm 
         sm:px-10
@@ -104,7 +105,6 @@ export default function Navbar() {
           "
         >
           Right
-          <GiRose className="text-2xl my-auto hover:text-rose-500 transition" />
         </button>
         {showMenu && (
           <div

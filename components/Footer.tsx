@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-gray-700 py-2">
+    <footer className="bg-gray-900 py-2">
       <div className="max-w-screen-xl w-full text-gray-200 mx-auto p-4 md:flex md:items-center md: justify-between border-b-gray-500 border-b">
         <div className="test-sm  sm:text-center">Footer</div>
         <div className="hover:underline">Hover-underline</div>
