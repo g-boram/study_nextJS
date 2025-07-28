@@ -1,13 +1,11 @@
+'use client'
 import RainbowBorder from '@/components/css/gradient/rainbowBorder'
 import React from 'react'
 
-const CSSPage = () => {
+export default function CSSPage() {
   return (
     <div>
-      <div>CSSPage</div>
       <RainbowBorder />
     </div>
   )
 }
-
-export default CSSPage
