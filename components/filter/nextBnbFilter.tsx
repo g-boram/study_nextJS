@@ -3,8 +3,10 @@ import React, { useState } from 'react'
 
 import { RxDividerVertical } from 'react-icons/rx'
 import { AiOutlineSearch } from 'react-icons/ai'
+import { RxCross2 } from 'react-icons/rx'
 
 import cn from 'classnames'
+import NextBnbFilterLayout from './nextBnbFilterLayout'
 
 type DetailFilterType = 'location' | 'checkIn' | 'checkOut' | 'guest'
 interface FilterProps {
@@ -27,10 +29,10 @@ export default function NextBnbFilter() {
   })
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <div>NextBnbFilter</div>
       {showFilter === false ? (
-        <div className="w-full sm:w-[280px] border py-1.5 border-gray-200 rounded-full shadow hover:shadow-lg cursor-pointer flex justify-between pl-6 pr-2">
+        <div className="w-full sm:w-[500px] border py-1.5 border-gray-200 rounded-full shadow hover:shadow-lg cursor-pointer flex justify-between pl-6 pr-2">
           <div
             role="presentation"
             className="flex justify-center gap-1 cursor-pointer"
@@ -54,7 +56,7 @@ export default function NextBnbFilter() {
           </button>
         </div>
       ) : (
-        <div className="sm:w-[340px] cursor-pointer w-full relative">
+        <div className="sm:w-[1000px] cursor-pointer w-full relative">
           <div className="flex justify-center gap-7 h-14 text-center items-center">
             <button
               type="button"
@@ -81,10 +83,10 @@ export default function NextBnbFilter() {
               className="underline underline-offset-8 text-gray-500 hover:text-black"
               onClick={() => setShowFilter(false)}
             >
-              필터 닫기
+              <RxCross2 />
             </button>
           </div>
-          <div className="w-[90%] sm:max-w-3xl flex flex-col sm:flex-row border border-gray-200 rounded-lg py-4 sm:py-2 sm:rounded-full shadow-sm bg-white hover:shadow-lg cursor-pointer justify-between fixed top-20 inset-x-0 mx-auto">
+          <div className="w-[90%] sm:max-w-3xl absolute flex flex-col sm:flex-row border border-gray-200 rounded-lg py-4 sm:py-2 sm:rounded-full shadow-sm bg-white hover:shadow-lg cursor-pointer justify-between top-20 inset-x-0 mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-4 w-full relative sm:pl-2">
               <button
                 type="button"
@@ -147,6 +149,14 @@ export default function NextBnbFilter() {
                   {`${filterValue?.guest} 명` || '게스트 추가'}
                 </div>
               </button>
+              {detailFilter === 'location' && (
+                <LocationFilter
+                  filterValue={filterValue}
+                  detailFilter={detailFilter}
+                  setFilterValue={setFilterValue}
+                  setDetailFilter={setDetailFilter}
+                />
+              )}
               {/* <SearchFilter /> */}
             </div>
             <button
@@ -165,5 +175,71 @@ export default function NextBnbFilter() {
         </div>
       )}
     </div>
+  )
+}
+
+interface FilterComponentProps {
+  filterValue: FilterProps
+  detailFilter: DetailFilterType
+  setFilterValue: React.Dispatch<React.SetStateAction<FilterProps>>
+  setDetailFilter: React.Dispatch<React.SetStateAction<DetailFilterType | null>>
+}
+
+const LocationFilter = ({
+  filterValue,
+  setFilterValue,
+  setDetailFilter,
+  detailFilter,
+}: FilterComponentProps) => {
+  return (
+    <NextBnbFilterLayout
+      dataTitle="filter-location-wrapper"
+      title="지역으로 검색하기"
+      isShow={detailFilter === 'location'}
+    >
+      <div className="flex flex-wrap gap-4 mt-4">
+        {['서울', '경기', '부산', '대구', '인천', '광주', '대전', '울산']?.map(
+          (value) => (
+            <button
+              key={value}
+              type="button"
+              data-cy={`filter-location-${value}`}
+              className={cn(
+                'border rounded-lg px-5 py-2.5 hover:bg-gray-200 focus:bg-rose-500',
+                {
+                  'bg-rose-600 text-white': filterValue.location === value,
+                },
+              )}
+              onClick={() => {
+                setFilterValue({
+                  ...filterValue,
+                  location: value,
+                })
+                setDetailFilter('checkIn')
+              }}
+            >
+              {value}
+            </button>
+          ),
+        )}
+        <button
+          className={cn(
+            'border rounded-lg px-5 py-2.5 hover:bg-gray-200 focus:bg-rose-500',
+            {
+              'bg-rose-600 text-white': filterValue.location === '',
+            },
+          )}
+          onClick={() => {
+            setFilterValue({
+              ...filterValue,
+              location: '',
+            })
+            setDetailFilter('checkIn')
+          }}
+        >
+          전체
+        </button>
+      </div>
+    </NextBnbFilterLayout>
   )
 }
