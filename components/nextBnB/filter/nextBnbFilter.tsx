@@ -1,11 +1,18 @@
 'use client'
 import React, { useState } from 'react'
 
-import { RxDividerVertical } from 'react-icons/rx'
-import { AiOutlineSearch } from 'react-icons/ai'
-import { RxCross2 } from 'react-icons/rx'
+import { RxDividerVertical, RxCross2 } from 'react-icons/rx'
+import {
+  AiOutlineSearch,
+  AiOutlinePlusCircle,
+  AiOutlineMinusCircle,
+} from 'react-icons/ai'
 
 import cn from 'classnames'
+import Calendar from 'react-calendar'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ko'
+
 import NextBnbFilterLayout from './nextBnbFilterLayout'
 
 type DetailFilterType = 'location' | 'checkIn' | 'checkOut' | 'guest'
@@ -93,7 +100,7 @@ export default function NextBnbFilter() {
                 data-cy="filter-location-btn"
                 onClick={() => setDetailFilter('location')}
                 className={cn(
-                  'font-semibold text-xs rounded-full hover:bg-gray-100 py-3 px-6 text-left',
+                  'font-semibold text-xs rounded-full hover:bg-gray-100 py-3 px-6 mx-2 text-left',
                   {
                     'shadow bg-white': detailFilter === 'location',
                   },
@@ -108,7 +115,7 @@ export default function NextBnbFilter() {
                 type="button"
                 onClick={() => setDetailFilter('checkIn')}
                 className={cn(
-                  'font-semibold text-xs rounded-full hover:bg-gray-100 py-3 px-6 text-left',
+                  'font-semibold text-xs rounded-full hover:bg-gray-100 py-3 px-6 mx-2 text-left',
                   {
                     'shadow bg-white': detailFilter === 'checkIn',
                   },
@@ -123,7 +130,7 @@ export default function NextBnbFilter() {
                 type="button"
                 onClick={() => setDetailFilter('checkOut')}
                 className={cn(
-                  'font-semibold text-xs rounded-full hover:bg-gray-100 py-3 px-6 text-left',
+                  'font-semibold text-xs rounded-full hover:bg-gray-100 py-3 px-6 mx-2 text-left',
                   {
                     'shadow bg-white': detailFilter === 'checkOut',
                   },
@@ -138,7 +145,7 @@ export default function NextBnbFilter() {
                 type="button"
                 onClick={() => setDetailFilter('guest')}
                 className={cn(
-                  'font-semibold text-xs rounded-full hover:bg-gray-100 py-3 px-6 text-left',
+                  'font-semibold text-xs rounded-full hover:bg-gray-100 py-3 px-6 mx-2 text-left',
                   {
                     'shadow bg-white': detailFilter === 'guest',
                   },
@@ -157,7 +164,30 @@ export default function NextBnbFilter() {
                   setDetailFilter={setDetailFilter}
                 />
               )}
-              {/* <SearchFilter /> */}
+              {detailFilter === 'checkIn' && (
+                <CheckInFilter
+                  filterValue={filterValue}
+                  detailFilter={detailFilter}
+                  setFilterValue={setFilterValue}
+                  setDetailFilter={setDetailFilter}
+                />
+              )}
+              {detailFilter === 'checkOut' && (
+                <CheckOutFilter
+                  filterValue={filterValue}
+                  detailFilter={detailFilter}
+                  setFilterValue={setFilterValue}
+                  setDetailFilter={setDetailFilter}
+                />
+              )}
+              {detailFilter === 'guest' && (
+                <GuestFilter
+                  filterValue={filterValue}
+                  detailFilter={detailFilter}
+                  setFilterValue={setFilterValue}
+                  setDetailFilter={setDetailFilter}
+                />
+              )}
             </div>
             <button
               type="button"
@@ -185,6 +215,7 @@ interface FilterComponentProps {
   setDetailFilter: React.Dispatch<React.SetStateAction<DetailFilterType | null>>
 }
 
+// 지역선택 필터
 const LocationFilter = ({
   filterValue,
   setFilterValue,
@@ -239,6 +270,129 @@ const LocationFilter = ({
         >
           전체
         </button>
+      </div>
+    </NextBnbFilterLayout>
+  )
+}
+
+// 체크인 필터
+const CheckInFilter = ({
+  filterValue,
+  setFilterValue,
+  setDetailFilter,
+  detailFilter,
+}: FilterComponentProps) => {
+  const onChange = (e: any) => {
+    setFilterValue({ ...filterValue, checkIn: dayjs(e).format('YYYY-MM-DD') })
+    setDetailFilter('checkOut')
+  }
+  return (
+    <NextBnbFilterLayout
+      dataTitle="filter-location-wrapper"
+      title="체크인 날짜 선택하기"
+      isShow={detailFilter === 'checkIn'}
+    >
+      <Calendar
+        className="mt-8 mx-auto"
+        onChange={onChange}
+        minDate={new Date()}
+        defaultValue={
+          filterValue.checkIn ? new Date(filterValue.checkIn) : null
+        }
+        formatDay={(locale, date) => dayjs(date).format('DD')}
+      />
+    </NextBnbFilterLayout>
+  )
+}
+
+// 체크아웃 필터
+const CheckOutFilter = ({
+  filterValue,
+  setFilterValue,
+  setDetailFilter,
+  detailFilter,
+}: FilterComponentProps) => {
+  const onChange = (e: any) => {
+    setFilterValue({ ...filterValue, checkOut: dayjs(e).format('YYYY-MM-DD') })
+    setDetailFilter('guest')
+  }
+  return (
+    <NextBnbFilterLayout
+      dataTitle="filter-location-wrapper"
+      title="체크아웃 날짜 선택하기"
+      isShow={detailFilter === 'checkOut'}
+    >
+      <Calendar
+        className="mt-8 mx-auto"
+        onChange={onChange}
+        minDate={
+          filterValue.checkIn ? new Date(filterValue.checkIn) : new Date()
+        }
+        defaultValue={
+          filterValue.checkOut ? new Date(filterValue.checkOut) : null
+        }
+        formatDay={(locale, date) => dayjs(date).format('DD')}
+      />
+    </NextBnbFilterLayout>
+  )
+}
+
+// 인원수 선택 필터
+const GuestFilter = ({
+  filterValue,
+  setFilterValue,
+  setDetailFilter,
+  detailFilter,
+}: FilterComponentProps) => {
+  const [counter, setCounter] = useState<number>(filterValue.guest || 0)
+
+  return (
+    <NextBnbFilterLayout
+      dataTitle="filter-location-wrapper"
+      title="게스트 수 추가하기"
+      isShow={detailFilter === 'guest'}
+    >
+      <div className="flex flex-wrap justify-between gap-4 mt-4">
+        <div>
+          <div className="font-semibold text-sm">게스트 수 추가</div>
+          <div className="font-gray-500 text-sm">숙박 인원을 입력해주세요</div>
+        </div>
+
+        <div className="flex gap-4 items-center justify-center">
+          <button
+            type="button"
+            className="rounded-full w-8 h-8 disabled:border-gray-200 hover:border-black"
+            disabled={counter <= 0}
+            onClick={() => {
+              setCounter((val) => val - 1)
+              setFilterValue({
+                ...filterValue,
+                guest: counter - 1,
+              })
+            }}
+          >
+            <AiOutlineMinusCircle
+              className={cn('m-auto', { 'text-gray-200': counter <= 0 })}
+            />
+          </button>
+          <div className="w-3 text-center">{counter}</div>
+          <button
+            type="button"
+            className="rounded-full w-8 h-8 disabled:border-gray-200 hover:border-black"
+            disabled={counter >= 20}
+            onClick={() => {
+              setCounter((val) => val + 1)
+              setFilterValue({
+                ...filterValue,
+                guest: counter + 1,
+              })
+            }}
+          >
+            <AiOutlinePlusCircle
+              className={cn('m-auto', { 'text-gray-200': counter >= 20 })}
+            />
+          </button>
+        </div>
       </div>
     </NextBnbFilterLayout>
   )
