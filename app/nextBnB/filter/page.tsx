@@ -1,4 +1,4 @@
-import NextBnbFilter from '@/components/filter/nextBnbFilter'
+import NextBnbFilter from '@/components/nextBnB/filter/nextBnbFilter'
 
 export default function FilterPage() {
   return (
