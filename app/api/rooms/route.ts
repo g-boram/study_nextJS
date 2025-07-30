@@ -10,10 +10,7 @@ export async function GET(req: Request) {
   const mockRooms: RoomType[] = [
     {
       id: 1,
-      images: [
-        'https://source.unsplash.com/800x600/?house',
-        'https://source.unsplash.com/800x600/?living-room',
-      ],
+      images: ['https://picsum.photos/800/600'],
       title: '한적한 자연 속 독채 하우스',
       address: '강원도 평창군 대관령면',
       desc: '탁 트인 자연 경관과 조용한 분위기의 독채 숙소입니다.',
@@ -37,10 +34,7 @@ export async function GET(req: Request) {
     },
     {
       id: 2,
-      images: [
-        'https://source.unsplash.com/800x600/?apartment',
-        'https://source.unsplash.com/800x600/?kitchen',
-      ],
+      images: ['https://picsum.photos/800/600'],
       title: '도심 속 감성 가득한 아파트',
       address: '서울특별시 마포구 연남동',
       desc: '감성적인 인테리어의 아늑한 도심 속 숙소입니다.',

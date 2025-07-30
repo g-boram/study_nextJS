@@ -30,8 +30,8 @@ export default function MovePageBar() {
       icon: <SlDoc />,
     },
     {
-      url: '/nextBnB/map',
-      name: 'Map',
+      url: '/nextBnB/roomsDetail',
+      name: 'Rooms Detail',
       bg: 'bg-blue-300',
       icon: <SlMap />,
     },
