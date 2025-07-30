@@ -4,7 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import Image from 'next/image'
 
-import { RoomType } from '@/interface'
+import { RoomType } from '../../../interface/nextBnb'
 import { CiShare1 } from 'react-icons/ci'
 import { BLUR_DATA_URL } from '@/constants'
 import {
@@ -17,6 +17,15 @@ import {
 
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+
+const randomImg = [
+  'https://picsum.photos/60/60',
+  'https://picsum.photos/60/60',
+  'https://picsum.photos/60/60',
+  'https://picsum.photos/60/60',
+  'https://picsum.photos/60/60',
+  'https://picsum.photos/60/60',
+]
 
 export default function ShareButton({ data }: { data: RoomType }) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -97,20 +106,11 @@ export default function ShareButton({ data }: { data: RoomType }) {
                   </button>
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-md font-medium leading-6 text-gray-900"
                   >
                     숙소 공유하기
                   </Dialog.Title>
-                  <div className="mt-5 flex gap-4 items-center">
-                    <Image
-                      src={data?.images?.[0]}
-                      alt="room img"
-                      width={60}
-                      height={60}
-                      placeholder="blur"
-                      blurDataURL={BLUR_DATA_URL}
-                      className="rounded-md"
-                    />
+                  <div className="mt-5 flex flex-col gap-4 items-center">
                     <div className="flex items-center gap-1 text-sm">
                       <div className="text-gray-800">{data?.title}</div>
                       <div className="text-gray-600">·</div>
@@ -118,22 +118,37 @@ export default function ShareButton({ data }: { data: RoomType }) {
                       <div className="text-gray-600">·</div>
                       <div className="text-gray-800">{data?.address}</div>
                     </div>
+                    <div className="mt-5 flex gap-4 items-center">
+                      {randomImg.map((img, i) => (
+                        <Image
+                          key={i}
+                          src={img}
+                          alt="room img"
+                          width={60}
+                          height={60}
+                          style={{ objectFit: 'cover' }}
+                          className="rounded-md"
+                          // placeholder="blur"
+                          // blurDataURL=""
+                        />
+                      ))}
+                    </div>
                   </div>
                   <div className="mt-6 grid grid-col-1 md:grid-cols-2 gap-4 mb-6">
                     <button
                       type="button"
                       onClick={handleCopyLink}
-                      className="border border-gray-300 font-semibold rounded-lg px-6 py-4 flex items-center gap-4 hover:bg-black/5"
+                      className="border border-gray-300 font-semibold rounded-lg px-6 py-4 flex items-center gap-4 hover:bg-black/5 text-sm"
                     >
-                      <AiOutlineCopy className="text-xl md:text-3xl" />
+                      <AiOutlineCopy className="text-xl md:text-2xl" />
                       링크 복사
                     </button>
                     {typeof window !== 'undefined' && (
                       <Link
                         href={`mailto:?subject=FastCampus 숙소 공유하기&body=${window.location.href}`}
-                        className="border border-gray-300 font-semibold rounded-lg px-6 py-4 flex items-center gap-4 hover:bg-black/5"
+                        className="border border-gray-300 font-semibold rounded-lg px-6 py-4 flex items-center gap-4 hover:bg-black/5 text-sm"
                       >
-                        <AiOutlineMail className="text-xl md:text-3xl" />
+                        <AiOutlineMail className="text-xl md:text-2xl" />
                         이메일
                       </Link>
                     )}
@@ -141,17 +156,17 @@ export default function ShareButton({ data }: { data: RoomType }) {
                     <button
                       onClick={handleShareTwitter}
                       type="button"
-                      className="border border-gray-300 font-semibold rounded-lg px-6 py-4 flex items-center gap-4 hover:bg-black/5"
+                      className="border border-gray-300 font-semibold rounded-lg px-6 py-4 flex items-center gap-4 hover:bg-black/5 text-sm"
                     >
-                      <AiFillTwitterSquare className="text-xl md:text-3xl text-sky-500" />
+                      <AiFillTwitterSquare className="text-xl md:text-2xl text-sky-500" />
                       트위터
                     </button>
                     <button
                       type="button"
                       onClick={handleShareFacebook}
-                      className="border border-gray-300 font-semibold rounded-lg px-6 py-4 flex items-center gap-4 hover:bg-black/5"
+                      className="border border-gray-300 font-semibold rounded-lg px-6 py-4 flex items-center gap-4 hover:bg-black/5 text-sm"
                     >
-                      <AiFillFacebook className="text-xl md:text-3xl text-blue-600" />
+                      <AiFillFacebook className="text-xl md:text-2xl text-blue-600" />
                       페이스북
                     </button>
                   </div>
