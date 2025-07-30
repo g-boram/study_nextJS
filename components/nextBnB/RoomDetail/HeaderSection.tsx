@@ -22,6 +22,7 @@ export default function HeaderSection({ data }: { data: RoomType }) {
         <div className="underline text-xs md:text-sm mt-2">{data.address}</div>
         <div className="flex gap-2 text-xs md:text-sm mt-2">
           <ShareButton data={data} />
+          {/* TODO : 로그인 후 이용가능? 좋아요/저장 기능 */}
           <LikeButton room={data} />
         </div>
       </div>
@@ -59,6 +60,7 @@ export default function HeaderSection({ data }: { data: RoomType }) {
           사진 모두 보기
         </button>
       </div>
+      {/* TODO : 이미지 전체보기 모달-추후 사용가능할 듯 하다 */}
       <ImageListModal
         isOpen={showImageModal}
         data={data}
