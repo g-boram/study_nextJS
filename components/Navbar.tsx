@@ -1,20 +1,31 @@
 'use client'
 
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { GiCrownedHeart } from 'react-icons/gi'
 import { GiRose } from 'react-icons/gi'
 
-const menus = [
-  { id: 1, title: 'Menu1', url: '/menu1' },
-  { id: 2, title: 'Menu2', url: '/menu2' },
-  { id: 3, title: 'Menu3', url: '/menu3' },
-  { id: 4, title: 'Menu4', url: '/menu4' },
-  { id: 5, title: 'Menu5', url: '/menu5' },
+// 로그인 O 사용자 메뉴
+const LOGIN_O_USER_MENU = [
+  { id: 1, title: 'Login_1', url: '#' },
+  { id: 2, title: 'Login_2', url: '#' },
+  { id: 3, title: '로그아웃 하기', url: '#', signOut: true },
 ]
 
+// 로그인 X 사용자 메뉴
+const LOGIN_X_USER_MENU = [
+  { id: 1, title: '로그인 하기', url: '/users/signin' },
+  { id: 2, title: '회원가입 하기', url: '#' },
+  { id: 3, title: 'LogOut_3', url: '#' },
+]
+
+// 오른쪽 토글 버튼 네비바
+// 로그인 여부에 따른 메뉴 리스트 및 버튼 글씨로 로그인 보여줌
 export default function Navbar() {
   const [showMenu, setShowMenu] = useState(false)
+
+  const { status } = useSession()
   const router = useRouter()
 
   return (
@@ -104,7 +115,7 @@ export default function Navbar() {
             bg-gray-50
           "
         >
-          Right
+          {status === 'unauthenticated' ? 'Login-X' : 'Login-O'}
         </button>
         {showMenu && (
           <div
@@ -124,16 +135,34 @@ export default function Navbar() {
               rounded-md
             "
           >
-            {menus?.map((menu) => (
-              <button
-                type="button"
-                key={menu.id}
-                className="h-10 hover:bg-gray-100 text-sm text-gray-700 rounded-full"
-                onClick={() => router.push(menu.url)}
-              >
-                {menu.title}
-              </button>
-            ))}
+            {status === 'unauthenticated'
+              ? LOGIN_X_USER_MENU.map((menu) => (
+                  <button
+                    type="button"
+                    key={menu.id}
+                    className="h-10 hover:bg-gray-100 text-sm text-gray-700 rounded-full"
+                    onClick={() => {
+                      router.push(menu.url)
+                      setShowMenu(false)
+                    }}
+                  >
+                    {menu.title}
+                  </button>
+                ))
+              : LOGIN_O_USER_MENU.map((menu) => (
+                  <button
+                    type="button"
+                    key={menu.id}
+                    className="h-10 hover:bg-gray-100 text-sm text-gray-700 rounded-full"
+                    onClick={() => {
+                      menu.signOut ? signOut() : null
+                      router.push(menu.url)
+                      setShowMenu(false)
+                    }}
+                  >
+                    {menu.title}
+                  </button>
+                ))}
           </div>
         )}
       </div>
