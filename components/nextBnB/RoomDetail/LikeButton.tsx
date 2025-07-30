@@ -12,19 +12,19 @@ import { useSession } from 'next-auth/react'
 export default function LikeButton({ room }: { room: RoomType }) {
   // const { data: session } = useSession()
 
-  const fetchRoom = async () => {
-    const { data } = await axios(`/api/rooms?id=${room.id}`)
-    return data as RoomType
-  }
+  // const fetchRoom = async () => {
+  //   const { data } = await axios(`/api/rooms?id=${room.id}`)
+  //   return data as RoomType
+  // }
 
-  const { data: roomData, refetch } = useQuery<RoomType>(
-    `like-room-${room.id}`,
-    fetchRoom,
-    {
-      enabled: !!room.id,
-      refetchOnWindowFocus: false,
-    },
-  )
+  // const { data: roomData, refetch } = useQuery<RoomType>(
+  //   `like-room-${room.id}`,
+  //   fetchRoom,
+  //   {
+  //     enabled: !!room.id,
+  //     refetchOnWindowFocus: false,
+  //   },
+  // )
 
   // const toggleLike = async () => {
   //   // 찜하기 / 찜 취소하기 로직
@@ -67,7 +67,7 @@ export default function LikeButton({ room }: { room: RoomType }) {
       className="flex gap-2 items-center px-2 py-1.5 rounded-lg hover:bg-black/10"
     >
       {/* 로그인된 사용자가 좋아요를 누른 경우 */}
-      {roomData?.likes?.length ? (
+      {room?.likes?.length ? (
         <>
           <AiFillHeart className="text-red-500 hover:text-red-600 focus:text-red-600" />
           <span className="underline">취소</span>
