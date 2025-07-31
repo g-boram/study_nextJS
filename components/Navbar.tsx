@@ -9,7 +9,7 @@ import { GiRose } from 'react-icons/gi'
 // 로그인 O 사용자 메뉴
 const LOGIN_O_USER_MENU = [
   { id: 1, title: 'Login_1', url: '#' },
-  { id: 2, title: 'Login_2', url: '#' },
+  { id: 2, title: '마이 페이지', url: '/users/mypage' },
   { id: 3, title: '로그아웃 하기', url: '#', signOut: true },
 ]
 
