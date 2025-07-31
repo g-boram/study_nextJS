@@ -158,7 +158,7 @@ export interface PaymentType {
   paymentKey: string
   bookingId: string
   amount: number
-  status: PaymentStatus
+  status: PaymentStatus | string
   orderId: string
   orderName: string
   approvedAt: string

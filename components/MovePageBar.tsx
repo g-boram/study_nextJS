@@ -1,7 +1,14 @@
 'use client'
 import React from 'react'
 import { useRouter } from 'next/navigation'
-import { SlHome, SlDiamond, SlMap, SlMenu, SlDoc } from 'react-icons/sl'
+import {
+  SlHome,
+  SlDiamond,
+  SlMap,
+  SlMenu,
+  SlDoc,
+  SlCreditCard,
+} from 'react-icons/sl'
 
 export default function MovePageBar() {
   const { push } = useRouter()
@@ -34,6 +41,12 @@ export default function MovePageBar() {
       name: 'Rooms Detail',
       bg: 'bg-blue-300',
       icon: <SlMap />,
+    },
+    {
+      url: '/payments?customerKey=123&roomTitle=Ocean%20View%20Suite&checkIn=2025-08-10&checkOut=2025-08-13&guestCount=2&totalAmount=450000&totalDays=3&bookingId=9876',
+      name: 'Toss',
+      bg: 'bg-blue-400',
+      icon: <SlCreditCard />,
     },
   ]
   return (
