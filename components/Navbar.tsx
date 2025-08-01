@@ -1,10 +1,11 @@
 'use client'
 
+import { useNavbar } from '@/context/NavStateContext'
+import { useTheme } from '@/context/ThemeContext'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { GiCrownedHeart } from 'react-icons/gi'
-import { GiRose } from 'react-icons/gi'
 
 // 로그인 O 사용자 메뉴
 const LOGIN_O_USER_MENU = [
@@ -20,12 +21,32 @@ const LOGIN_X_USER_MENU = [
   { id: 3, title: 'LogOut_3', url: '#' },
 ]
 
+const CENTER_MENU = [
+  { id: 1, title: 'HOME', url: '/', hover: 'text-rose-200', state: 'home' },
+  {
+    id: 2,
+    title: 'COMMON',
+    url: '/common',
+    hover: 'text-yellow-200',
+    state: 'common',
+  },
+  {
+    id: 3,
+    title: 'NEXTBnB',
+    url: '/nextBnB',
+    hover: 'text-blue-200',
+    state: 'bnb',
+  },
+]
+
 // 오른쪽 토글 버튼 네비바
 // 로그인 여부에 따른 메뉴 리스트 및 버튼 글씨로 로그인 보여줌
 export default function Navbar() {
   const [showMenu, setShowMenu] = useState(false)
 
   const { status } = useSession()
+  const { theme, toggleTheme } = useTheme() // 테마 관리
+  const { state, onClickNavbar } = useNavbar() // 네비바 상태값 관리
   const router = useRouter()
 
   return (
@@ -82,9 +103,18 @@ export default function Navbar() {
           cursor-pointer
         "
       >
-        <div className="text-gray-100 hover:text-rose-200">Center-1</div>
-        <div className="text-gray-100 hover:text-yellow-200">Center-2</div>
-        <div className="text-gray-100 hover:text-blue-200">Center-3</div>
+        {CENTER_MENU.map((v, i) => (
+          <div
+            key={i}
+            className={`text-gray-100 hover:${v.hover}`}
+            onClick={() => {
+              onClickNavbar(v.state)
+              router.push(v.url)
+            }}
+          >
+            {v.title}
+          </div>
+        ))}
       </div>
       {/* ---------- Right ---------- */}
       <div
